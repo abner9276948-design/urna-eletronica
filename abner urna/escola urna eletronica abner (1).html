@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simulação escolar de votação eletrônica.">
+    <title>Urna Escolar</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #233047;
+            background: #f1f5f9;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            --azul: #17326b;
+            --azul-claro: #2454a6;
+            --verde: #176b45;
+            --borda: #dbe4ef;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            padding: 32px 16px;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #f0b429;
+            outline-offset: 3px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .pagina {
+            width: min(100%, 760px);
+            margin: 0 auto;
+        }
+
+        .aplicativo {
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid var(--borda);
+            border-radius: 20px;
+            box-shadow: 0 12px 32px rgb(23 50 107 / 10%);
+        }
+
+        .cabecalho {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 28px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+        }
+
+        .icone-urna {
+            display: grid;
+            width: 52px;
+            height: 52px;
+            flex: 0 0 52px;
+            place-items: center;
+            color: var(--azul);
+            background: #fff;
+            border-radius: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .etiqueta {
+            margin: 0 0 5px;
+            color: #f0cf75;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.7rem, 5vw, 2.2rem);
+        }
+
+        .descricao,
+        .identificacao,
+        .etapa-votacao,
+        .resultado {
+            margin: 0;
+            padding: 24px 28px;
+        }
+
+        .descricao {
+            padding-bottom: 0;
+            color: #64748b;
+        }
+
+        h2 {
+            margin: 0 0 18px;
+            color: var(--azul);
+            font-size: 1.35rem;
+        }
+
+        .identificacao form {
+            display: grid;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 700;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            min-height: 48px;
+            padding: 11px 13px;
+            border: 1px solid #bdc9d8;
+            border-radius: 9px;
+        }
+
+        .botao-continuar {
+            min-height: 48px;
+            margin-top: 6px;
+            padding: 12px 18px;
+            color: #fff;
+            background: var(--verde);
+            border: 0;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+
+        .botao-continuar:hover {
+            background: #104b30;
+        }
+
+        .urna {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 230px;
+            gap: 18px;
+            padding: 18px;
+            background: #e8edf3;
+            border: 1px solid #d5dde7;
+            border-radius: 16px;
+        }
+
+        .tela-urna {
+            display: flex;
+            min-height: 360px;
+            flex-direction: column;
+            overflow: hidden;
+            color: #172033;
+            background: #f8fafc;
+            border: 8px solid #202936;
+            border-radius: 8px;
+        }
+
+        .cabecalho-tela {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 11px 13px;
+            color: #fff;
+            background: var(--azul);
+            font-size: .7rem;
+            font-weight: 700;
+        }
+
+        .conteudo-tela {
+            flex: 1;
+            padding: 20px 16px 10px;
+            text-align: center;
+        }
+
+        .instrucao-tela {
+            margin: 0 0 7px;
+            color: #64748b;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
+
+        .conteudo-tela h2 {
+            margin-bottom: 14px;
+        }
+
+        .numero-digitado {
+            max-width: 150px;
+            min-height: 50px !important;
+            text-align: center;
+            font-size: 1.8rem !important;
+            font-weight: 700;
+        }
+
+        .opcao-selecionada {
+            min-height: 24px;
+            margin: 10px 0;
+            font-weight: 700;
+        }
+
+        .dica-tela {
+            margin: 0;
+            color: #64748b;
+            font-size: .82rem;
+        }
+
+        .legenda-opcoes {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px 10px;
+            padding: 12px;
+            border-top: 1px solid var(--borda);
+            font-size: .75rem;
+        }
+
+        .teclado {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 13px;
+            padding: 14px;
+            background: #273244;
+            border-radius: 10px;
+        }
+
+        .teclas-numericas {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .tecla-numero {
+            min-height: 48px;
+            color: #fff;
+            background: #111827;
+            border: 1px solid #566174;
+            border-radius: 7px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .tecla-numero:hover {
+            background: #3a475c;
+        }
+
+        .tecla-zero {
+            grid-column: 2;
+        }
+
+        .teclas-acao {
+            display: grid;
+            gap: 8px;
+        }
+
+        .teclas-acao button {
+            min-height: 40px;
+            padding: 8px;
+            border: 0;
+            border-radius: 6px;
+            font-size: .75rem;
+            font-weight: 800;
+        }
+
+        .tecla-branco {
+            background: #fff;
+        }
+
+        .tecla-corrige {
+            background: #f2bf4b;
+        }
+
+        .tecla-confirma {
+            min-height: 48px !important;
+            color: #fff;
+            background: #21834f;
+        }
+
+        .tecla-confirma:hover {
+            background: #176b45;
+        }
+
+        #mensagem {
+            min-height: 24px;
+            margin: 0;
+            padding: 0 28px;
+            color: var(--azul);
+            font-weight: 700;
+        }
+
+        #mensagem.erro {
+            color: #b42318;
+        }
+
+        .resultado {
+            margin: 20px 28px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+        }
+
+        .resultado h2 {
+            margin-bottom: 12px;
+        }
+
+        .resultado p {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 7px 0;
+        }
+
+        .resultado h3 {
+            margin: 14px 0 0;
+            padding-top: 12px;
+            border-top: 1px solid var(--borda);
+        }
+
+        .rodape {
+            margin: 24px 0 0;
+            padding: 16px 28px;
+            color: #64748b;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        @media (max-width: 620px) {
+            body {
+                padding: 16px 10px;
+            }
+
+            .cabecalho {
+                padding: 22px 18px;
+            }
+
+            .descricao,
+            .identificacao,
+            .etapa-votacao {
+                padding-right: 18px;
+                padding-left: 18px;
+            }
+
+            .urna {
+                grid-template-columns: 1fr;
+                padding: 12px;
+            }
+
+            .tela-urna {
+                min-height: 330px;
+            }
+
+            .teclado {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+            }
+
+            .teclas-acao {
+                gap: 10px;
+            }
+
+            #mensagem {
+                padding: 0 18px;
+            }
+
+            .resultado {
+                margin-right: 18px;
+                margin-left: 18px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="pagina">
+        <section class="aplicativo" aria-labelledby="titulo">
+            <header class="cabecalho">
+                <div class="icone-urna" aria-hidden="true">✓</div>
+                <div>
+                    <p class="etiqueta">PARTICIPAÇÃO ESTUDANTIL</p>
+                    <h1 id="titulo">Urna Escolar</h1>
+                </div>
+            </header>
+
+            <p class="descricao">Uma simulação escolar inspirada na urna eletrônica.</p>
+
+            <section id="etapaIdentificacao" class="identificacao" aria-labelledby="tituloIdentificacao">
+                <h2 id="tituloIdentificacao">Identificação do aluno</h2>
+                <form id="formIdentificacao">
+                    <label for="nomeAluno">Nome do aluno</label>
+                    <input
+                        id="nomeAluno"
+                        name="nomeAluno"
+                        type="text"
+                        placeholder="Digite seu nome completo"
+                        autocomplete="name"
+                        maxlength="100"
+                        required
+                    >
+                    <button class="botao-continuar" type="submit">
+                        Iniciar votação <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+            </section>
+
+            <section id="etapaVotacao" class="etapa-votacao" aria-labelledby="tituloVotacao" hidden>
+                <div class="urna">
+                    <div class="tela-urna" aria-label="Tela da urna eletrônica">
+                        <div class="cabecalho-tela">
+                            <span>JUSTIÇA ELEITORAL</span>
+                            <span>VOTAÇÃO</span>
+                        </div>
+                        <div class="conteudo-tela">
+                            <p class="instrucao-tela">SEU VOTO PARA</p>
+                            <h2 id="tituloVotacao">Área de estudo</h2>
+                            <label for="numeroChapa">Número da opção escolhida</label>
+                            <input id="numeroChapa" class="numero-digitado" type="text" readonly aria-describedby="opcaoSelecionada">
+                            <p id="opcaoSelecionada" class="opcao-selecionada" aria-live="polite">Digite o número da opção</p>
+                            <p class="dica-tela">Confira a opção e pressione CONFIRMA.</p>
+                        </div>
+                        <div class="legenda-opcoes" aria-label="Opções de votação">
+                            <span>1 — Lógica</span>
+                            <span>2 — POO</span>
+                            <span>3 — Web</span>
+                            <span>4 — Sistemas</span>
+                            <span>5 — Arquitetura</span>
+                            <span>6 — Robótica</span>
+                            <span>7 — Gestão</span>
+                            <span>8 — HTML/CSS</span>
+                        </div>
+                    </div>
+
+                    <form id="formUrna" class="teclado" aria-label="Teclado da urna">
+                        <div class="teclas-numericas">
+                            <button type="button" class="tecla-numero" data-numero="1" aria-label="Número 1">1</button>
+                            <button type="button" class="tecla-numero" data-numero="2" aria-label="Número 2">2</button>
+                            <button type="button" class="tecla-numero" data-numero="3" aria-label="Número 3">3</button>
+                            <button type="button" class="tecla-numero" data-numero="4" aria-label="Número 4">4</button>
+                            <button type="button" class="tecla-numero" data-numero="5" aria-label="Número 5">5</button>
+                            <button type="button" class="tecla-numero" data-numero="6" aria-label="Número 6">6</button>
+                            <button type="button" class="tecla-numero" data-numero="7" aria-label="Número 7">7</button>
+                            <button type="button" class="tecla-numero" data-numero="8" aria-label="Número 8">8</button>
+                            <button type="button" class="tecla-numero tecla-zero" data-numero="0" aria-label="Número 0">0</button>
+                        </div>
+                        <div class="teclas-acao">
+                            <button type="button" class="tecla-branco" data-acao="branco">BRANCO</button>
+                            <button type="button" class="tecla-corrige" data-acao="corrige">CORRIGE</button>
+                            <button type="submit" class="tecla-confirma">CONFIRMA</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <p id="mensagem" role="status" aria-live="polite"></p>
+
+            <section id="resultado" class="resultado" aria-labelledby="tituloResultado" hidden>
+                <h2 id="tituloResultado">Resultado parcial</h2>
+                <p>1 — Lógica de Programação <strong id="votos1">0</strong></p>
+                <p>2 — POO (Java) <strong id="votos2">0</strong></p>
+                <p>3 — Programação Web <strong id="votos3">0</strong></p>
+                <p>4 — Sistemas Operacionais <strong id="votos4">0</strong></p>
+                <p>5 — Arquitetura e Manutenção <strong id="votos5">0</strong></p>
+                <p>6 — Noções de Robótica <strong id="votos6">0</strong></p>
+                <p>7 — Gestão do Tempo <strong id="votos7">0</strong></p>
+                <p>8 — HTML e CSS <strong id="votos8">0</strong></p>
+                <p>Votos em branco <strong id="votosBrancos">0</strong></p>
+                <h3>Total de votos: <span id="totalVotos">0</span></h3>
+            </section>
+
+            <p class="rodape">Seu voto é importante. Participe!</p>
+        </section>
+    </main>
+
+    <script>
+        (() => {
+            const opcoes = {
+                "1": "Lógica de Programação",
+                "2": "POO (Java)",
+                "3": "Programação Web",
+                "4": "Sistemas Operacionais",
+                "5": "Arquitetura e Manutenção",
+                "6": "Noções de Robótica",
+                "7": "Gestão do Tempo",
+                "8": "HTML e CSS"
+            };
+            const votos = Object.fromEntries(
+                Object.keys(opcoes).map((numero) => [numero, 0])
+            );
+            let votosBrancos = 0;
+            let totalVotos = 0;
+            let votoSelecionado = "";
+
+            const etapaIdentificacao = document.getElementById("etapaIdentificacao");
+            const etapaVotacao = document.getElementById("etapaVotacao");
+            const formIdentificacao = document.getElementById("formIdentificacao");
+            const formUrna = document.getElementById("formUrna");
+            const nomeAluno = document.getElementById("nomeAluno");
+            const numeroChapa = document.getElementById("numeroChapa");
+            const opcaoSelecionada = document.getElementById("opcaoSelecionada");
+            const mensagem = document.getElementById("mensagem");
+            const resultado = document.getElementById("resultado");
+            const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "COLE_SUA_CHAVE_PUBLISHABLE_AQUI";
+
+            function exibirMensagem(texto, erro = false) {
+                mensagem.textContent = texto;
+                mensagem.classList.toggle("erro", erro);
+            }
+
+            function limparSelecao() {
+                votoSelecionado = "";
+                numeroChapa.value = "";
+                opcaoSelecionada.textContent = "Digite o número da opção";
+            }
+
+            function selecionarNumero(numero) {
+                votoSelecionado = numero;
+                numeroChapa.value = numero;
+                opcaoSelecionada.textContent = opcoes[numero] || "Opção inválida";
+                exibirMensagem("");
+            }
+
+            function atualizarResultado() {
+                for (const numero of Object.keys(opcoes)) {
+                    document.getElementById(`votos${numero}`).textContent = votos[numero];
+                }
+                document.getElementById("votosBrancos").textContent = votosBrancos;
+                document.getElementById("totalVotos").textContent = totalVotos;
+                resultado.hidden = false;
+            }
+
+            formIdentificacao.addEventListener("submit", (evento) => {
+                evento.preventDefault();
+                if (!formIdentificacao.reportValidity()) return;
+
+                etapaIdentificacao.hidden = true;
+                etapaVotacao.hidden = false;
+                limparSelecao();
+                exibirMensagem("");
+                document.querySelector('[data-numero="1"]').focus();
+            });
+
+            formUrna.addEventListener("click", (evento) => {
+                const botao = evento.target.closest("button");
+                if (!botao) return;
+
+                if (botao.hasAttribute("data-numero")) {
+                    selecionarNumero(botao.dataset.numero);
+                    return;
+                }
+
+                if (botao.dataset.acao === "branco") {
+                    votoSelecionado = "branco";
+                    numeroChapa.value = "";
+                    opcaoSelecionada.textContent = "Voto em branco";
+                    exibirMensagem("");
+                } else if (botao.dataset.acao === "corrige") {
+                    limparSelecao();
+                    exibirMensagem("Seleção corrigida.");
+                }
+            });
+
+            formUrna.addEventListener("submit", (evento) => {
+                evento.preventDefault();
+                if (!votoSelecionado) {
+                    exibirMensagem("Selecione uma opção ou escolha BRANCO antes de confirmar.", true);
+                    return;
+                }
+
+                if (votoSelecionado === "branco") {
+                    votosBrancos += 1;
+                } else if (Object.hasOwn(votos, votoSelecionado)) {
+                    votos[votoSelecionado] += 1;
+                } else {
+                    exibirMensagem("Opção inválida. Corrija e escolha um número de 1 a 8.", true);
+                    return;
+                }
+
+                totalVotos += 1;
+                atualizarResultado();
+
+                const nome = nomeAluno.value.trim();
+                formIdentificacao.reset();
+                etapaVotacao.hidden = true;
+                etapaIdentificacao.hidden = false;
+                limparSelecao();
+                exibirMensagem(`Voto registrado${nome ? `, ${nome}` : ""}. Próximo aluno pode iniciar a votação.`);
+                nomeAluno.focus();
+            });
+        })();
+    </script>
+</body>
+</html>

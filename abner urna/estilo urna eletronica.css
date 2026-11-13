@@ -1,0 +1,452 @@
+
+/* =========================================
+   1. VARIÁVEIS DE CORES
+========================================= */
+:root {
+    --cor-primaria: #17326b;
+    --cor-secundaria: #176b45;
+    --cor-destaque: #f0b429;
+    --cor-fundo: #f1f5f9;
+    --cor-painel: #ffffff;
+    --cor-texto: #243247;
+    --cor-texto-suave: #64748b;
+    --cor-borda: #dbe4ef;
+
+    --sombra: 0 8px 25px rgba(23, 50, 107, 0.08);
+    --sombra-hover: 0 12px 28px rgba(23, 50, 107, 0.14);
+}
+
+/* =========================================
+   2. CONFIGURAÇÕES GERAIS
+========================================= */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 35px 18px;
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+/* =========================================
+   3. CONTAINER PRINCIPAL
+========================================= */
+.urna {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+/* =========================================
+   4. CABEÇALHO
+========================================= */
+.cabecalho {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 28px;
+    padding: 35px 25px;
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        #17326b,
+        #2454a6
+    );
+
+    color: #ffffff;
+    border-radius: 20px;
+    box-shadow: var(--sombra);
+}
+
+.cabecalho h1 {
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.cabecalho p:last-child {
+    margin: 0;
+    color: #dbeafe;
+    font-size: 1rem;
+}
+
+.etiqueta {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 5px 12px;
+
+    color: #17326b;
+    background: #f0b429;
+
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   5. PAINÉIS
+========================================= */
+.painel {
+    margin-bottom: 25px;
+    padding: 28px;
+
+    background: var(--cor-painel);
+    border: 1px solid var(--cor-borda);
+    border-radius: 18px;
+
+    box-shadow: var(--sombra);
+
+    transition: box-shadow 0.25s ease;
+}
+
+.painel:hover {
+    box-shadow: var(--sombra-hover);
+}
+
+/* =========================================
+   6. CABEÇALHO DOS PAINÉIS
+========================================= */
+.painel-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin: 0;
+    color: var(--cor-primaria);
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+/* =========================================
+   7. STATUS
+========================================= */
+.status {
+    height: fit-content;
+    padding: 7px 13px;
+
+    color: #166534;
+    background: #dcfce7;
+
+    border: 1px solid #bbf7d0;
+    border-radius: 30px;
+
+    font-size: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* =========================================
+   8. FORMULÁRIOS
+========================================= */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+label {
+    color: var(--cor-texto);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+
+    color: var(--cor-texto);
+    background: #f8fafc;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+
+    font-size: 1rem;
+    font-family: inherit;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+input::placeholder {
+    color: #94a3b8;
+}
+
+input:hover {
+    border-color: #94b3df;
+}
+
+input:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: #2454a6;
+
+    box-shadow: 0 0 0 4px rgba(36, 84, 166, 0.12);
+}
+
+/* =========================================
+   9. BOTÕES
+========================================= */
+.botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 13px 18px;
+
+    border: 0;
+    border-radius: 10px;
+
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.botao-principal {
+    color: #ffffff;
+    background: var(--cor-secundaria);
+
+    box-shadow: 0 4px 12px rgba(23, 107, 69, 0.18);
+}
+
+.botao-principal:hover {
+    background: #104b30;
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 16px rgba(23, 107, 69, 0.25);
+}
+
+.botao:active {
+    transform: scale(0.98);
+}
+
+.botao:focus-visible {
+    outline: 3px solid var(--cor-destaque);
+    outline-offset: 3px;
+}
+
+.botao:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =========================================
+   10. MENSAGENS
+========================================= */
+.mensagem {
+    min-height: 24px;
+    margin: 14px 0 0;
+
+    color: var(--cor-secundaria);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* =========================================
+   11. LISTA DE CHAPAS
+========================================= */
+.chapas {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(240px, 1fr)
+    );
+
+    gap: 18px;
+}
+
+/* =========================================
+   12. CARTÕES DAS CHAPAS
+========================================= */
+.chapa {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 20px;
+
+    background: #f8fafc;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 14px;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.chapa:hover {
+    transform: translateY(-3px);
+
+    border-color: #9bb5e8;
+    box-shadow: var(--sombra-hover);
+}
+
+/* =========================================
+   13. NÚMERO DA CHAPA
+========================================= */
+.numero {
+    display: grid;
+    place-items: center;
+
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        #17326b,
+        #2454a6
+    );
+
+    border-radius: 14px;
+
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+/* =========================================
+   14. INFORMAÇÕES DA CHAPA
+========================================= */
+.dados-chapa {
+    flex: 1;
+    min-width: 0;
+}
+
+.dados-chapa h3 {
+    margin: 0 0 5px;
+
+    color: var(--cor-primaria);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.dados-chapa p {
+    margin: 0;
+
+    color: var(--cor-texto-suave);
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   15. BOTÕES DENTRO DAS CHAPAS
+========================================= */
+.chapa .botao {
+    margin-top: 8px;
+}
+
+.chapa .botao-principal {
+    width: 100%;
+}
+
+/* =========================================
+   16. ELEMENTOS OCULTOS
+========================================= */
+[hidden] {
+    display: none !important;
+}
+
+/* =========================================
+   17. ANIMAÇÃO
+========================================= */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   18. RESPONSIVIDADE
+========================================= */
+@media (max-width: 560px) {
+    body {
+        padding: 18px 12px;
+    }
+
+    .cabecalho {
+        padding: 28px 18px;
+        border-radius: 16px;
+    }
+
+    .painel {
+        padding: 22px 18px;
+        border-radius: 15px;
+    }
+
+    .painel-topo {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .status {
+        align-self: flex-start;
+    }
+
+    .chapas {
+        grid-template-columns: 1fr;
+    }
+
+    .chapa {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .chapa .botao {
+        width: 100%;
+    }
+
+    .numero {
+        width: 46px;
+        height: 46px;
+        flex-basis: 46px;
+    }
+}
+
+/* =========================================
+   19. ACESSIBILIDADE
+========================================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

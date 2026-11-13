@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urna Eletrônica Escolar</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <main class="urna">
+        <header class="cabecalho">
+            <p class="etiqueta">ELEIÇÃO ESCOLAR</p>
+            <h1>Urna Eletrônica</h1>
+            <p>Escolha a chapa que representará sua escola.</p>
+        </header>
+
+        <section class="painel" aria-labelledby="titulo-identificacao">
+            <div class="painel-topo">
+                <div>
+                    <p class="etiqueta">ETAPA 1</p>
+                    <h2 id="titulo-identificacao">Identificação</h2>
+                </div>
+                <span id="status" class="status">Votação aberta</span>
+            </div>
+
+            <form id="formEleitor">
+                <label for="nome">Nome do eleitor</label>
+                <input type="text" id="nome" name="nome" autocomplete="name" required>
+                <button class="botao botao-principal" type="submit">Continuar</button>
+            </form>
+            <p id="mensagem" class="mensagem" role="status" aria-live="polite"></p>
+        </section>
+
+        <section id="area-votacao" class="painel" hidden aria-labelledby="titulo-chapas">
+            <div class="painel-topo">
+                <div>
+                    <h2 id="titulo-chapas">Escolha sua chapa</h2>
+                </div>
+                <strong id="eleitor-atual"></strong>
+            </div>
+            <div id="chapas" class="chapas"></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
